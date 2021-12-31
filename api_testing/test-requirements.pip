@@ -1,0 +1,4 @@
+deepdiff~=5.7.0
+parameterized~=0.8.0
+pytest~=6.2.5
+requests~=2.26.0
