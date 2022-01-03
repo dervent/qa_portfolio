@@ -68,6 +68,7 @@ class TestBase(TestCase):
         if request_params:
             if not isinstance(request_params, dict):
                 raise TypeError("Parameter request_params must be of type dict.")
+
         return requests.get(const.HOST + const.BOOKING_ENDPOINT, params=request_params)
 
     def get_booking(self, booking_id):
@@ -78,9 +79,29 @@ class TestBase(TestCase):
         """
         return requests.get(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}")
 
+    def update_booking(self, booking_id, request_data=None):
+        """
+        Returns response from updating specified booking.
+        :param booking_id: booking id
+        :param request_data: booking data to be sent as JSON object
+        :return: Response object
+        """
+        request_headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Cookie": f"token={self.token}"
+        }
+
+        if request_data:
+            if not isinstance(request_data, dict):
+                raise TypeError("Parameter request_data must be of type dict.")
+
+        return requests.put(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}",
+                            headers=request_headers, json=request_data)
+
     def delete_booking(self, booking_id):
         """
-        Returns response from deleting a specific booking.
+        Returns response from deleting a specified booking.
         :param booking_id:
         :return: Response object
         """
@@ -89,6 +110,7 @@ class TestBase(TestCase):
             "Accept": "application/json",
             "Cookie": f"token={self.token}"
         }
+
         return requests.delete(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}", headers=request_headers)
 
     def get_dates(self, num_days_delta, num_days_stay):

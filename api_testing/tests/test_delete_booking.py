@@ -7,29 +7,27 @@ class TestDeleteBooking(TestBase):
     Class for testing the deletion of bookings
     """
     base = TestBase()
-    booking_id = None
 
     @classmethod
     def setUpClass(cls):
         """
-        Authenticate user.
-        Create booking and assign its data.
+        Authenticate admin user.
         """
         cls.base.create_token()
-        cls.booking_id = cls.base.create_booking().json()["bookingid"]
 
     def test_delete_booking_success(self):
         """
         Test successfully deleting an existing booking
         """
         # Use object 'base', which has token variable set, to make API call
-        response = self.base.delete_booking(self.booking_id)
+        booking_id = self.base.create_booking().json()["bookingid"]
+        response = self.base.delete_booking(booking_id)
 
         self.assertEqual(201, response.status_code)
         self.assertEqual("Created", response.text)
 
         # Verify that booking can no longer be found
-        response = self.base.get_booking(self.booking_id)
+        response = self.base.get_booking(booking_id)
 
         self.assertEqual(404, response.status_code)
         self.assertEqual("Not Found", response.text)
