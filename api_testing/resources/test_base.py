@@ -12,9 +12,20 @@ class TestBase(TestCase):
     functions used across multiple test classes
     """
 
+    token = None
+    request_json = None
+
     def __init__(self, *args, **kwargs):
         TestCase.__init__(self, *args, **kwargs)
-        self.request_json = {}
+
+    def create_token(self):
+        """
+        Creates a new auth token.
+        """
+        request_header = {"Content-Type": "application/json"}
+        request_data = {"username": const.USERNAME, "password": const.PASSWORD}
+        response = requests.post(const.HOST + const.AUTH_ENDPOINT, headers=request_header, json=request_data)
+        self.token = response.json()["token"]
 
     def create_booking(self, data=None):
         """
@@ -67,6 +78,19 @@ class TestBase(TestCase):
         """
         return requests.get(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}")
 
+    def delete_booking(self, booking_id):
+        """
+        Returns response from deleting a specific booking.
+        :param booking_id:
+        :return: Response object
+        """
+        request_headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Cookie": f"token={self.token}"
+        }
+        return requests.delete(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}", headers=request_headers)
+
     def get_dates(self, num_days_delta, num_days_stay):
         """
         Returns check-in and check-out days
@@ -97,7 +121,7 @@ class TestBase(TestCase):
             for key in exclude_keys:
                 path = "root"
                 for json_ele in key.split("/"):
-                    path += "['%s']" % json_ele
+                    path += f"['{json_ele}']"
                 exclude_paths.append(path)
 
         dict_difference = DeepDiff(expected_dict, actual_dict, ignore_order=True, exclude_paths=exclude_paths)

@@ -32,7 +32,7 @@ class TestCreateBooking(TestBase):
         # Booking dates in the past
         '{"bookingdates": {"checkin": "2000-01-01", "checkout": "2000-01-02"}}'
     ])
-    @skip("Bug: API does not properly handle negative cases.")
+    @skip("Bug: API does not properly handle requests with negative values.")
     def test_create_booking_failure(self, data):
         """
         Test create booking failure
