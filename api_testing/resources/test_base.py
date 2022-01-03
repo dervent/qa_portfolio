@@ -48,6 +48,25 @@ class TestBase(TestCase):
 
         return requests.post(const.HOST + const.BOOKING_ENDPOINT, headers=request_header, json=self.request_json)
 
+    def get_booking_ids(self, request_params=None):
+        """
+        Returns response with the IDs of all the bookings that exist.
+        :param request_params: dict of parameter key-values to include in request
+        :return: Response object
+        """
+        if request_params:
+            if not isinstance(request_params, dict):
+                raise TypeError("Parameter request_params must be of type dict.")
+        return requests.get(const.HOST + const.BOOKING_ENDPOINT, params=request_params)
+
+    def get_booking(self, booking_id):
+        """
+        Returns response with a specific booking based on the provided ID.
+        :param booking_id: booking ID
+        :return: Response object
+        """
+        return requests.get(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}")
+
     def get_dates(self, num_days_delta, num_days_stay):
         """
         Returns check-in and check-out days
