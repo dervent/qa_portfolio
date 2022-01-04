@@ -99,6 +99,26 @@ class TestBase(TestCase):
         return requests.put(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}",
                             headers=request_headers, json=request_data)
 
+    def partial_update_booking(self, booking_id, partial_request_data=None):
+        """
+        Returns response from updating specified booking with partial data.
+        :param booking_id: booking id
+        :param partial_request_data: partial data to update booking with
+        :return: Response object
+        """
+        request_headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Cookie": f"token={self.token}"
+        }
+
+        if partial_request_data:
+            if not isinstance(partial_request_data, dict):
+                raise TypeError("Parameter partial_data must be of type dict.")
+
+        return requests.patch(f"{const.HOST}{const.BOOKING_ENDPOINT}/{booking_id}",
+                              headers=request_headers, json=partial_request_data)
+
     def delete_booking(self, booking_id):
         """
         Returns response from deleting a specified booking.
