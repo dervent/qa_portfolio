@@ -57,3 +57,13 @@ class TestGetBookingIDs(TestBase):
 
         self.assertEqual(200, response.status_code)
         self.assertFalse(response.json())
+
+    def test_get_booking_ids(self):
+        """
+        Test success getting all booking IDs when no query parameters are specified
+        """
+        response = self.get_booking_ids()
+
+        self.assertEqual(200, response.status_code)
+        # The API comes pre-loaded with 10 records
+        self.assertGreaterEqual(len(response.json()), 10)

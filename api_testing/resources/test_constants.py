@@ -14,7 +14,7 @@ TEST_ENVIRONMENT = os.environ.get("TEST_ENVIRONMENT", "production")
 USERNAME = os.environ.get("USERNAME")
 PASSWORD = os.environ.get("PASSWORD")
 if USERNAME is None or PASSWORD is None:
-    raise ValueError("Must set USERNAME and PASSWORD variables for access to API.")
+    raise ValueError("Must set USERNAME and PASSWORD variables to make some API calls.")
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(DATA_FILE)

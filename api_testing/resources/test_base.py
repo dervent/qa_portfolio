@@ -8,8 +8,8 @@ import requests
 
 class TestBase(TestCase):
     """
-    Base class which executes API calls and contains
-    functions used across multiple test classes
+    Base class which executes API calls and contains other
+    common functions used across multiple test classes.
     """
 
     token = None
@@ -29,8 +29,8 @@ class TestBase(TestCase):
 
     def create_booking(self, data=None):
         """
-        Creates a new booking
-        :param data: booking data to include in request JSON
+        Returns response that creates a new booking.
+        :param data: dict of booking data to include as part of request body
         :return: Response object
         """
         request_header = {"Content-Type": "application/json"}
@@ -49,7 +49,7 @@ class TestBase(TestCase):
             "additionalneeds": "Breakfast"
         }
 
-        # If data is provided, replace matching values in above dict object
+        # If value for data parameter is provided, replace matching values in above dict object
         if data:
             if not isinstance(data, dict):
                 raise TypeError("Parameter request_data must be of type dict.")
@@ -122,7 +122,7 @@ class TestBase(TestCase):
     def delete_booking(self, booking_id):
         """
         Returns response from deleting a specified booking.
-        :param booking_id:
+        :param booking_id: booking id
         :return: Response object
         """
         request_headers = {
