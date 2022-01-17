@@ -1,0 +1,15 @@
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-yaml
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint --rcfile=api_testing/pylintrc api_testing
+        language: system
+        types: [ python ]
