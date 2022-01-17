@@ -10,7 +10,7 @@ source name-of-venv/bin/activate
 ```
 
 Install dependencies: <br/>
-`pip3 install -r requirements.pip`
+`pip3 install -r test-requirements.pip`
 
 Set environment variables for admin credentials. Values can be obtained from the Restful-Booker
 API documentation [here](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken).
