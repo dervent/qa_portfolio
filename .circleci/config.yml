@@ -1,0 +1,23 @@
+version: 2.1
+orbs:
+  python: circleci/python@1.2
+jobs:
+  run-api-tests:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          app-dir: api_testing
+          pip-dependency-file: test-requirements.pip
+      - run:
+          name: "Running API Tests"
+          command: pytest api_testing/tests/
+workflows:
+  api-tests:
+    jobs:
+      - run-api-tests:
+          filters:
+            branches:
+              only: master
