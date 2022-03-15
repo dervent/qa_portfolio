@@ -1,5 +1,4 @@
 from api_testing.resources import test_constants as const
-from api_testing import conftest as fixture
 from deepdiff import DeepDiff
 import requests
 
@@ -35,47 +34,53 @@ def get_booking(booking_id: str) -> requests.Response:
     return requests.get(f"{url}/{booking_id}")
 
 
-def put(booking_id: str, request_data: dict = None) -> requests.Response:
+def put(booking_id: str, request_data: dict = None, token: str = None) -> requests.Response:
     """
     Make a request to update a current booking.
     :param booking_id: booking ID
     :param request_data: data in request body
+    :param token: authorization token
     :return: Response object
     """
     request_headers = {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Cookie": f"token={fixture.TOKEN}"
+        "Accept": "application/json"
     }
+    if token:
+        request_headers.update({"Cookie": f"token={token}"})
     return requests.put(f"{url}/{booking_id}", headers=request_headers, json=request_data)
 
 
-def patch(booking_id: str, request_data: dict = None) -> requests.Response:
+def patch(booking_id: str, request_data: dict = None, token: str = None) -> requests.Response:
     """
     Make a request to update a current booking with partial data.
     :param booking_id: booking ID
     :param request_data: partial data to update booking with
+    :param token: authorization token
     :return: Response object
     """
     request_headers = {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Cookie": f"token={fixture.TOKEN}"
+        "Accept": "application/json"
     }
+    if token:
+        request_headers.update({"Cookie": f"token={token}"})
     return requests.patch(f"{url}/{booking_id}", headers=request_headers, json=request_data)
 
 
-def delete(booking_id: str) -> requests.Response:
+def delete(booking_id: str, token: str = None) -> requests.Response:
     """
     Make a request to delete a current booking.
     :param booking_id: booking ID
+    :param token: authorization token
     :return: Response object
     """
     request_headers = {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Cookie": f"token={fixture.TOKEN}"
+        "Accept": "application/json"
     }
+    if token:
+        request_headers.update({"Cookie": f"token={token}"})
     return requests.delete(f"{url}/{booking_id}", headers=request_headers)
 
 

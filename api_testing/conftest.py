@@ -7,13 +7,11 @@ from random import randint
 import pytest
 import requests
 
-TOKEN = None
 
-
-@pytest.fixture(scope="session", autouse=True)
-def set_token():
+@pytest.fixture(scope="session")
+def token() -> None:
     """
-    Sets value of auth token for admin user.
+    Gets auth token for admin user.
     """
     request_header = {"Content-Type": "application/json"}
     request_data = {
@@ -22,24 +20,23 @@ def set_token():
     }
     response = requests.post(f"{const.HOST}{const.AUTH_ENDPOINT}",
                              headers=request_header, json=request_data)
-    global TOKEN
-    TOKEN = response.json()["token"]
+    return response.json()["token"]
 
 
 @pytest.fixture
-def booking() -> dict:
+def booking(token) -> dict:
     """
-    Return booking object found in Response body
-    :return: booking object
+    Creates booking object in API
     """
-    booking = const.VALID_BOOKING.copy()
-    return base.post(booking).json()
+    booking_dict = const.VALID_BOOKING.copy()
+    booking = base.post(booking_dict).json()
+    yield booking
+    base.delete(booking["bookingid"], token)
 
 
 @pytest.fixture
-def partial_booking_data() -> dict:
+def partial_booking_dict() -> dict:
     """
-    Return partial booking data
-    :return: partial booking data
+    Returns partial booking data
     """
     return {"totalprice": randint(100, 1000)}
