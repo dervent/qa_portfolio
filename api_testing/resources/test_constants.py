@@ -1,26 +1,34 @@
 """
 Constants used across classes
 """
-import configparser
 import os
+import yaml
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "../data")
-DATA_FILE = os.path.join(DATA_DIR, "data.ini")
-if not os.path.exists(DATA_FILE):
-    raise OSError(f"{DATA_FILE} does not exist.")
-
-TEST_ENVIRONMENT = os.environ.get("TEST_ENVIRONMENT", "production")
-
-USERNAME = os.environ.get("USERNAME")
-PASSWORD = os.environ.get("PASSWORD")
+# Environment variables
+USERNAME: str = os.environ.get("USERNAME")
+PASSWORD: str = os.environ.get("PASSWORD")
 if USERNAME is None or PASSWORD is None:
-    raise ValueError("Must set USERNAME and PASSWORD variables to make some API calls.")
+    raise EnvironmentError("Must set USERNAME and PASSWORD variables.")
 
-CONFIG = configparser.ConfigParser()
-CONFIG.read(DATA_FILE)
+# Data file
+DATA_DIR: str = os.path.join(os.path.dirname(__file__), "../data")
+DATA_FILE: str = os.path.join(DATA_DIR, "booking_objects.yml")
+if not os.path.exists(DATA_FILE):
+    raise FileNotFoundError(f"{DATA_FILE} does not exist.")
+with open(DATA_FILE) as file:
+    OBJS: dict = yaml.safe_load(file)
+    VALID_BOOKING: dict = OBJS["valid_booking"]
+    INVALID_BOOKINGS: list = OBJS["invalid_bookings"]
 
-HOST = CONFIG.get(TEST_ENVIRONMENT, "host")
+# Host
+HOST: str = "https://restful-booker.herokuapp.com"
 
 # Endpoints
-AUTH_ENDPOINT = "/auth"
-BOOKING_ENDPOINT = "/booking"
+AUTH_ENDPOINT: str = "/auth"
+BOOKING_ENDPOINT: str = "/booking"
+
+# Invalid values
+INVALID_ID: str = "invalid_id"
+
+# Test skip reason
+SKIP_REASON: str = "API does not properly handle such case."

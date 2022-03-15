@@ -13,7 +13,7 @@ jobs:
           pip-dependency-file: test-requirements.pip
       - run:
           name: "Running API Tests"
-          command: pytest api_testing/tests/
+          command: pytest --verbose api_testing/tests/
 workflows:
   api-tests:
     jobs:

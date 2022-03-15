@@ -1,43 +1,38 @@
-from api_testing.resources.test_base import TestBase
-from unittest import skip
+from api_testing.resources import test_base as base
+from api_testing.resources import test_constants as const
+import pytest
 
 
-class TestDeleteBooking(TestBase):
+def test_delete_booking_success(booking: dict, token: str) -> None:
     """
-    Class for testing the deletion of bookings
+    Test successfully deleting an existing booking
     """
-    base = TestBase()
+    booking_id = booking["bookingid"]
 
-    @classmethod
-    def setUpClass(cls):
-        """
-        Authenticate admin user.
-        """
-        cls.base.create_token()
+    # Make request to delete booking
+    response = base.delete(booking_id, token)
+    assert response.status_code == 201
 
-    def test_delete_booking_success(self):
-        """
-        Test successfully deleting an existing booking
-        """
-        # Use object 'base', which has token variable set, to make API call
-        booking_id = self.base.create_booking().json()["bookingid"]
-        response = self.base.delete_booking(booking_id)
+    # Verify that booking cannot be retrieved
+    response = base.get_booking(booking_id)
+    assert response.status_code == 404
+    assert response.text == "Not Found"
 
-        self.assertEqual(201, response.status_code)
-        self.assertEqual("Created", response.text)
 
-        # Verify that booking can no longer be found
-        response = self.base.get_booking(booking_id)
+@pytest.mark.skip(reason=const.SKIP_REASON)
+def test_delete_booking_failure(token: str) -> None:
+    """
+    Test failure to delete a nonexistent booking
+    """
+    response = base.delete(const.INVALID_ID, token)
+    assert response.status_code == 404
+    assert response.text == "Not Found"
 
-        self.assertEqual(404, response.status_code)
-        self.assertEqual("Not Found", response.text)
 
-    @skip("Bug: API does not properly handle requests with nonexistent booking IDs.")
-    def test_delete_booking_failure(self):
-        """
-        Test failing to delete a nonexistent booking
-        """
-        response = self.base.delete_booking("nonexistent")
-
-        self.assertEqual(404, response.status_code)
-        self.assertEqual("Not Found", response.text)
+def test_delete_booking_failure_forbidden() -> None:
+    """
+    Test failure to delete a booking without authorization
+    """
+    response = base.delete(const.INVALID_ID)
+    assert response.status_code == 403
+    assert response.text == "Forbidden"

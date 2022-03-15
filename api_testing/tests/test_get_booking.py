@@ -1,29 +1,23 @@
-from api_testing.resources.test_base import TestBase
+from api_testing.resources import test_base as base
+from api_testing.resources import test_constants as const
 
 
-class TestGetBooking(TestBase):
+def test_get_booking_success(booking: dict) -> None:
     """
-    Class for testing getting bookings by ID
+    Test successfully getting a single booking by ID
     """
+    response = base.get_booking(booking["bookingid"])
 
-    def test_get_booking_success(self):
-        """
-        Test successfully getting a single booking by ID
-        """
-        # Create new booking and store its ID
-        booking_id = self.create_booking().json()["bookingid"]
-        response = self.get_booking(booking_id)
+    # Verify that the correct booking is retrieved
+    assert response.status_code == 200
+    assert response.json()
+    assert base.is_dict_identical(response.json(), booking["booking"])
 
-        # Verify that the correct booking is retrieved
-        self.assertEqual(200, response.status_code)
-        self.assertIsNotNone(response.json())
-        self.assertTrue(self.is_dict_identical(self.request_json, response.json()))
 
-    def test_get_booking_failure(self):
-        """
-        Test failure getting booking with nonexistent ID
-        """
-        response = self.get_booking("invalidID")
-
-        self.assertEqual(404, response.status_code)
-        self.assertEqual("Not Found", response.text)
+def test_get_booking_failure() -> None:
+    """
+    Test failure getting booking with nonexistent ID
+    """
+    response = base.get_booking(const.INVALID_ID)
+    assert response.status_code == 404
+    assert response.text == "Not Found"

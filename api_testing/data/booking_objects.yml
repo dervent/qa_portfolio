@@ -1,0 +1,24 @@
+# Valid booking object
+valid_booking:
+  firstname: Dervent
+  lastname: West
+  totalprice: 1000
+  depositpaid: true
+  bookingdates:
+    checkin: !!str 2000-01-01
+    checkout: !!str 2000-01-02
+  additionalneeds: Breakfast
+
+# List of invalid booking objects
+invalid_bookings:
+  # Empty string for names
+  - firstname: !!str
+    lastname: !!str
+
+  # Negative price
+  - totalprice: -1
+
+  # Booking dates in the past
+  - bookingdates:
+      checkin: !!str 2000-01-01
+      checkout: !!str 2000-01-02

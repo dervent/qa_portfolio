@@ -1,69 +1,56 @@
-from api_testing.resources.test_base import TestBase
-from json import loads
+from api_testing.resources import test_base as base
+from api_testing.resources import test_constants as const
 from uuid import uuid4
-from parameterized import parameterized
+import pytest
+
+name = {"firstname": "Hello", "lastname": "World"}
+uuid: str = uuid4().hex
 
 
-class TestGetBookingIDs(TestBase):
+def setup_module() -> None:
     """
-    Class for testing the retrieval of booking IDs
+    Create two separate bookings
     """
+    booking = const.VALID_BOOKING.copy()
+    booking.update(name)
+    base.post(booking)
+    base.post(booking)
 
-    first_name = "Dervent"
-    last_name = "Weatherly"
-    uuid = uuid4().hex
 
-    @classmethod
-    def setUpClass(cls):
-        """
-        Create two separate bookings with same data.
-        """
-        data = {"firstname": f"{cls.first_name}", "lastname": f"{cls.last_name}"}
-        base = TestBase()
-        base.create_booking(data)
-        base.create_booking(data)
+@pytest.mark.parametrize("parameters", [
+    {"firstname": name["firstname"]},
+    {"lastname": name["lastname"]},
+    {"firstname": name["firstname"], "lastname": name["lastname"]}
+])
+def test_get_booking_ids_success(parameters: dict) -> None:
+    """
+    Test success getting booking IDs using valid values for first & last name
+    """
+    response = base.get_booking_ids(parameters)
+    assert 200 == response.status_code
+    assert len(response.json()) >= 2
+    for member in response.json():
+        assert "bookingid" in member.keys()
 
-    @parameterized.expand([
-        f'{{"firstname": "{first_name}"}}',
-        f'{{"lastname": "{last_name}"}}',
-        f'{{"firstname": "{first_name}", "lastname": "{last_name}"}}'
-    ])
-    def test_get_booking_ids_by_name_success(self, parameters):
-        """
-        Test success getting booking IDs using valid values for first & last name
-        """
-        response = self.get_booking_ids(loads(parameters))
 
-        self.assertEqual(200, response.status_code)
-        self.assertGreaterEqual(len(response.json()), 2)
-        for member in response.json():
-            self.assertIsNotNone(member["bookingid"])
+@pytest.mark.parametrize("parameters", [
+    {"firstname": ""},
+    {"lastname": f"{uuid}"},
+    {"firstname": f"{uuid}", "lastname": ""}
+])
+def test_get_booking_ids_failure(parameters: dict) -> None:
+    """
+    Test failure getting booking IDs using nonexistent values for first & last name
+    """
+    response = base.get_booking_ids(parameters)
+    assert 200 == response.status_code
+    assert not response.json()
 
-    @parameterized.expand([
-        # Empty string for first name
-        '{"firstname": ""}',
 
-        # Random UUID for last name
-        f'{{"lastname": "{last_name}-{uuid}"}}',
-
-        # Random UUID for first name and empty string for last name
-        f'{{"firstname": "{first_name}-{uuid}", "lastname": ""}}'
-    ])
-    def test_get_booking_ids_by_name_failure(self, parameters):
-        """
-        Test failure getting booking IDs using invalid values for first & last name
-        """
-        response = self.get_booking_ids(loads(parameters))
-
-        self.assertEqual(200, response.status_code)
-        self.assertFalse(response.json())
-
-    def test_get_booking_ids(self):
-        """
-        Test success getting all booking IDs when no query parameters are specified
-        """
-        response = self.get_booking_ids()
-
-        self.assertEqual(200, response.status_code)
-        # The API comes pre-loaded with 10 records
-        self.assertGreaterEqual(len(response.json()), 10)
+def test_get_all_booking_ids() -> None:
+    """
+    Test success getting all known booking IDs when no query parameters are specified
+    """
+    response = base.get_booking_ids()
+    assert 200 == response.status_code
+    assert len(response.json()) >= 2
