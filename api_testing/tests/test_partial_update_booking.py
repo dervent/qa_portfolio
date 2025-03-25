@@ -1,3 +1,6 @@
+"""
+Tests for partially updating bookings
+"""
 from api_testing.tests import SKIP_REASON, INVALID_ID
 from api_testing.base import test_base as base
 from api_testing.api_objects.booking import Booking
@@ -5,7 +8,7 @@ from random import randint
 import pytest
 
 
-def test_patch_booking_success(valid_booking, admin_token) -> None:
+def test_partial_update_booking_success(valid_booking, admin_token) -> None:
     """
     Test successful partial update of existent booking
     """
@@ -28,7 +31,7 @@ def test_patch_booking_success(valid_booking, admin_token) -> None:
     assert base.is_dict_identical(response.json(), valid_booking["booking"], list(partial_booking.keys()))
 
 
-def test_patch_booking_success_empty_object(valid_booking, admin_token) -> None:
+def test_partial_update_booking_success_empty_object(valid_booking, admin_token) -> None:
     """
     Test no partial update occurs when empty JSON object is provided
     """
@@ -44,7 +47,7 @@ def test_patch_booking_success_empty_object(valid_booking, admin_token) -> None:
 
 
 @pytest.mark.skip(reason=SKIP_REASON)
-def test_patch_booking_failure_invalid_id(admin_token) -> None:
+def test_partial_update_booking_failure_invalid_id(admin_token) -> None:
     """
     Test failed partial update when nonexistent ID is provided
     """
@@ -53,7 +56,7 @@ def test_patch_booking_failure_invalid_id(admin_token) -> None:
     assert response.text == "Not Found"
 
 
-def test_patch_booking_failure_forbidden() -> None:
+def test_partial_update_booking_failure_forbidden() -> None:
     """
     Test failure to partially update a booking without authorization
     """

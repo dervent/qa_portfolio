@@ -1,5 +1,5 @@
 """
-Fixtures for API tests.
+Fixtures for test suite
 """
 from api_testing import API_HOST
 from api_testing.api_objects.booking import Booking, BookingDates

@@ -1,3 +1,6 @@
+"""
+Tests for retrieval of bookings
+"""
 from api_testing.base import test_base as base
 from api_testing.tests import INVALID_ID
 

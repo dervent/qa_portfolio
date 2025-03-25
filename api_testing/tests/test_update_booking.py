@@ -1,3 +1,6 @@
+"""
+Tests for updating bookings
+"""
 from api_testing.base import test_base as base
 from api_testing.tests import SKIP_REASON, INVALID_ID
 from api_testing.api_objects.booking import Booking
@@ -5,7 +8,7 @@ import pytest
 
 partial_booking = Booking(totalprice=300, additionalneeds="crib").get_dict()
 
-def test_put_booking_success(valid_booking, admin_token) -> None:
+def test_update_booking_success(valid_booking, admin_token) -> None:
     """
     Test successful update of existent booking
     """
@@ -23,9 +26,9 @@ def test_put_booking_success(valid_booking, admin_token) -> None:
     assert base.is_dict_identical(response.json(), new_booking)
 
 
-def test_put_booking_failure_partial_data(valid_booking, admin_token) -> None:
+def test_update_booking_failure_partial_data(valid_booking, admin_token) -> None:
     """
-    Test failure to update existent booking with partial api_objects
+    Test failure to update existent booking with partial data
     """
     response = base.put(valid_booking["bookingid"], partial_booking, admin_token)
     assert response.status_code == 400
@@ -33,7 +36,7 @@ def test_put_booking_failure_partial_data(valid_booking, admin_token) -> None:
 
 
 @pytest.mark.skip(reason=SKIP_REASON)
-def test_put_booking_failure_invalid_id(admin_token) -> None:
+def test_update_booking_failure_invalid_id(admin_token) -> None:
     """
     Test failure to update a nonexistent booking
     """
@@ -42,7 +45,7 @@ def test_put_booking_failure_invalid_id(admin_token) -> None:
     assert response.text == "Not Found"
 
 
-def test_put_booking_failure_forbidden() -> None:
+def test_update_booking_failure_forbidden() -> None:
     """
     Test failure to update a booking without authorization
     """

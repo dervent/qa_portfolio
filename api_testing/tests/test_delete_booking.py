@@ -1,5 +1,5 @@
 """
-Module for testing deletion of bookings
+Tests for deletion of bookings
 """
 from api_testing.base import test_base as base
 from api_testing.tests import SKIP_REASON, INVALID_ID
@@ -8,7 +8,7 @@ import pytest
 
 def test_delete_booking_success(admin_token, valid_booking_data) -> None:
     """
-    Test success deleting a booking.
+    Test success deleting an existing booking
     """
     # Create booking
     response = base.post(valid_booking_data)

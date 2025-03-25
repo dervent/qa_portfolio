@@ -1,3 +1,6 @@
+"""
+Tests for retrieval of booking IDs
+"""
 from api_testing.base import test_base as base
 from api_testing.api_objects.booking import Booking, BookingDates
 from datetime import date, timedelta
@@ -37,7 +40,7 @@ def manage_bookings(admin_token) -> None:
     {"lastname": name["lastname"]},
     {"firstname": name["firstname"], "lastname": name["lastname"]}
 ])
-def test_get_booking_ids_success(parameters: dict) -> None:
+def test_get_booking_ids_success(parameters) -> None:
     """
     Test success getting booking IDs using valid values for first & last name
     """
@@ -53,7 +56,7 @@ def test_get_booking_ids_success(parameters: dict) -> None:
     {"lastname": RAND_HEX},
     {"firstname": RAND_HEX, "lastname": ""}
 ])
-def test_get_booking_ids_failure(parameters: dict) -> None:
+def test_get_booking_ids_failure(parameters) -> None:
     """
     Test failure getting booking IDs using nonexistent values for first & last name
     """
