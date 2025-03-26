@@ -1,30 +1,36 @@
-from api_testing.resources import test_base as base
-from api_testing.resources import test_constants as const
+"""
+Tests for deletion of bookings
+"""
+from api_testing.base import test_base as base
+from api_testing.tests import SKIP_REASON, INVALID_ID
 import pytest
 
 
-def test_delete_booking_success(booking: dict, token: str) -> None:
+def test_delete_booking_success(admin_token, valid_booking_data) -> None:
     """
-    Test successfully deleting an existing booking
+    Test success deleting an existing booking
     """
-    booking_id = booking["bookingid"]
+    # Create booking
+    response = base.post(valid_booking_data)
+    assert response.status_code == 200 and response.json()
+    booking_id = response.json()["bookingid"]
 
     # Make request to delete booking
-    response = base.delete(booking_id, token)
+    response = base.delete(booking_id, admin_token)
     assert response.status_code == 201
 
     # Verify that booking cannot be retrieved
-    response = base.get_booking(booking_id)
+    response = base.get(booking_id=booking_id)
     assert response.status_code == 404
     assert response.text == "Not Found"
 
 
-@pytest.mark.skip(reason=const.SKIP_REASON)
-def test_delete_booking_failure(token: str) -> None:
+@pytest.mark.skip(reason=SKIP_REASON)
+def test_delete_booking_failure(admin_token) -> None:
     """
     Test failure to delete a nonexistent booking
     """
-    response = base.delete(const.INVALID_ID, token)
+    response = base.delete(INVALID_ID, admin_token)
     assert response.status_code == 404
     assert response.text == "Not Found"
 
@@ -33,6 +39,6 @@ def test_delete_booking_failure_forbidden() -> None:
     """
     Test failure to delete a booking without authorization
     """
-    response = base.delete(const.INVALID_ID)
+    response = base.delete(INVALID_ID)
     assert response.status_code == 403
     assert response.text == "Forbidden"

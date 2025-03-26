@@ -1,23 +1,11 @@
 # API Tests
 This API test suite covers cases for the [Restful-Booker API](https://restful-booker.herokuapp.com/).
-To run the tests, this readme assumes you have Python 3.8 installed on a Linux or MacOS machine.
 
 ## Running Tests
-Create and activate a virtual environment:
-```shell
-python3 -m venv name-of-venv
-source name-of-venv/bin/activate
-```
-
-Install dependencies: <br/>
-`pip3 install -r test-requirements.pip`
-
-Set environment variables for admin credentials. Values can be obtained from the Restful-Booker
-API documentation [here](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken).
-```shell
-export export USERNAME=value
-export export PASSWORD=value
-```
-
-Run test suite (optionally with verbose flag): <br/>
-`pytest --verbose tests/`
+1. Use Python 3.12 or later. 
+2. Create and activate a new virtual environment.
+3. Install test requirements while in the root directory: `pip3 install -r api_testing/test-requirements.pip`
+4. Ensure you have the below env vars set. The value for each can be retrieved from the Restful-Booker API [documentation](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken).
+    * `USERNAME`
+    * `PASSWORD`
+5. Run the API test suite (optionally with verbose flag): `pytest --verbose api_testing/tests/`
