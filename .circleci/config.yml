@@ -4,16 +4,16 @@ orbs:
 jobs:
   run-api-tests:
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.12
     steps:
       - checkout
       - python/install-packages:
           pkg-manager: pip
-          app-dir: api_testing
+          app-dir: api_tests
           pip-dependency-file: test-requirements.pip
       - run:
           name: "Running API Tests"
-          command: pytest --verbose api_testing/tests/
+          command: pytest --verbose api_tests/tests/
 workflows:
   api-tests:
     jobs:

@@ -1,4 +1,4 @@
-from api_testing import API_HOST
+from api_tests import API_HOST
 from deepdiff import DeepDiff
 import requests
 

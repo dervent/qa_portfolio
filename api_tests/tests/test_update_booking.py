@@ -1,9 +1,9 @@
 """
 Tests for updating bookings
 """
-from api_testing.base import test_base as base
-from api_testing.tests import SKIP_REASON, INVALID_ID
-from api_testing.api_objects.booking import Booking
+from api_tests.base import test_base as base
+from api_tests.tests import SKIP_REASON, INVALID_ID
+from api_tests.api_objects.booking import Booking
 import pytest
 
 partial_booking = Booking(totalprice=300, additionalneeds="crib").get_dict()

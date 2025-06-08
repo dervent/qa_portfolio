@@ -1,8 +1,8 @@
 """
 Fixtures for test suite
 """
-from api_testing import API_HOST
-from api_testing.api_objects.booking import Booking, BookingDates
+from api_tests import API_HOST
+from api_tests.api_objects.booking import Booking, BookingDates
 from datetime import date, timedelta
 import os
 import pytest

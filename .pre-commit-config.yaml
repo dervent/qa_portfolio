@@ -10,6 +10,6 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint --rcfile=api_testing/pylintrc api_testing
+        entry: pylint --rcfile=api_tests/pylintrc api_tests
         language: system
         types: [ python ]

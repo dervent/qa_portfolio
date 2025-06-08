@@ -1,7 +1,7 @@
 """
 Tests for creation of bookings
 """
-from api_testing.base import test_base as base
+from api_tests.base import test_base as base
 
 
 def test_create_booking_success(valid_booking_data) -> None:
