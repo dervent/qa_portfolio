@@ -1,8 +1,8 @@
 """
 Tests for retrieval of booking IDs
 """
-from api_testing.base import test_base as base
-from api_testing.api_objects.booking import Booking, BookingDates
+from api_tests.base import test_base as base
+from api_tests.api_objects.booking import Booking, BookingDates
 from datetime import date, timedelta
 import uuid
 import pytest

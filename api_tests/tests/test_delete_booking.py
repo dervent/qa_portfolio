@@ -1,8 +1,8 @@
 """
 Tests for deletion of bookings
 """
-from api_testing.base import test_base as base
-from api_testing.tests import SKIP_REASON, INVALID_ID
+from api_tests.base import test_base as base
+from api_tests.tests import SKIP_REASON, INVALID_ID
 import pytest
 
 

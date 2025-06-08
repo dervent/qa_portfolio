@@ -1,8 +1,8 @@
 """
 Tests for retrieval of bookings
 """
-from api_testing.base import test_base as base
-from api_testing.tests import INVALID_ID
+from api_tests.base import test_base as base
+from api_tests.tests import INVALID_ID
 
 
 def test_get_booking_success(valid_booking) -> None:
