@@ -3,7 +3,8 @@ This portfolio showcases two test automation projects:
 1. **API test suite:** API test cases created for the
 [Restful-Booker API](https://restful-booker.herokuapp.com/) using Python 3.
 This suite can be found in the [api_tests](https://github.com/dervent/qa_portfolio/tree/master/api_tests) directory.
-2. **Selenium test suite:** TBA.
+2. **Selenium test suite:** Created using Selenium WebDriver with Java. 
+This suite can be found in the [selenium_tests](https://github.com/dervent/qa_portfolio/tree/master/selenium_tests) directory.
 
 ## Committing Code
 This project uses git hook scripts to perform static analysis of code to be committed.
