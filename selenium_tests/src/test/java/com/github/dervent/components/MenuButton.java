@@ -24,7 +24,8 @@ public class MenuButton {
      */
     public MenuButton(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        int waitTimeout = Integer.parseInt(System.getProperty("wait.timeout", "5"));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeout));
     }
 
     /**
