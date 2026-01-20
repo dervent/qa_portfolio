@@ -17,6 +17,11 @@
             <artifactId>testng</artifactId>
             <version>7.11.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.20.0</version>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/test/java/com/github/dervent</sourceDirectory>
@@ -30,6 +35,12 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <systemPropertyVariables>
+                        <app.url>https://www.saucedemo.com/</app.url>
+                        <browser>chrome</browser>
+                        <retry.count>2</retry.count>
+                        <wait.timeout>5</wait.timeout>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>

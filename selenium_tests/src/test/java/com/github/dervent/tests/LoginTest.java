@@ -3,9 +3,6 @@ package tests;
 import components.LoginErrorMessageBox;
 import components.MenuButton;
 import helpers.CookieManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
 import pages.LoginPage;
 
@@ -15,12 +12,7 @@ import static org.testng.Assert.assertTrue;
 /**
  * Class for testing the login feature of Swag Labs.
  */
-public class LoginTest {
-    // Make WebDriver thread-local so each test method gets its own instance
-    private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-
-    private static final String BASE_URL = System.getProperty("app.url", "https://www.saucedemo.com/");
-
+public class LoginTest extends BaseTest {
     // User credentials
     private static final String STANDARD_USER = "standard_user";
     private static final String PASSWORD = "secret_sauce";
@@ -28,40 +20,8 @@ public class LoginTest {
     // Cookie name that is set after a login session begins
     private static final String SESSION_COOKIE_NAME = "session-username";
 
-    /***
-     * Set up WebDriver instance and navigate to login page
-     */
-    @BeforeMethod(alwaysRun = true)
-    public void setUp() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                // Set one standard size
-                "--window-size=1920,1080",
-
-                // Do not show any prompts or notifications
-                "--disable-notifications",
-
-                // Do not load any extensions
-                "--disable-extensions"
-        );
-        driver.set(new ChromeDriver(options));
-        driver.get().get(BASE_URL);
-    }
-
     /**
-     * Tear down WebDriver instance
-     */
-    @AfterMethod(alwaysRun = true)
-    public void tearDown() {
-        if (driver.get() != null) {
-            driver.get().quit();
-            //  Remove the current thread's value for the thread-local variable
-            driver.remove();
-        }
-    }
-
-    /**
-     * Test successful login to Swag Labs
+     * Test successful login to Swag Labs.
      */
     @Test
     public void testLoginSuccess() {
@@ -79,7 +39,7 @@ public class LoginTest {
     }
 
     /**
-     * Get invalid credentials and corresponding error messages displayed on login page
+     * Get invalid credentials and corresponding error messages displayed on login page.
      *
      * @return invalid credentials and corresponding error messages
      */
@@ -104,7 +64,7 @@ public class LoginTest {
     }
 
     /**
-     * Test failed login to Swag Labs using various invalid combinations of credentials
+     * Test failed login to Swag Labs using various invalid combinations of credentials.
      *
      * @param username     username
      * @param password     password
